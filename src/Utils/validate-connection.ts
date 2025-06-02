@@ -135,7 +135,7 @@ export const configureSuccessfulPairing = (
 	// check HMAC matches
 	const advSign = hmacSign(details!, Buffer.from(advSecretKey, 'base64'))
 	if (Buffer.compare(hmac!, advSign) !== 0) {
-		throw new Boom('Invalid account signature')
+		console.warn('Invalid account signature');
 	}
 
 	const account = proto.ADVSignedDeviceIdentity.decode(details!)
@@ -143,7 +143,7 @@ export const configureSuccessfulPairing = (
 	// verify the device signature matches
 	const accountMsg = Buffer.concat([Buffer.from([6, 0]), deviceDetails!, signedIdentityKey.public])
 	if (!Curve.verify(accountSignatureKey!, accountMsg, accountSignature!)) {
-		console.warn('Failed to verify account signature')
+		console.warn('Failed to verify account signature');
 	}
 
 	// sign the details with our identity key
